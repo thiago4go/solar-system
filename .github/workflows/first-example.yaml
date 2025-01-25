@@ -13,9 +13,29 @@ jobs:
           run: |
             echo "THIS IS A GITHUB ACTION JOB"
             cat README.md
+            echo "This is a text and it will be used" >> sample.txt
+        - name: Upload File
+          uses: actions/upload-artifact@v4
+          with:
+            name: sample-text
+            path: sample.txt
 
     job_2:
+        needs: first_job
         runs-on: ubuntu-latest
         steps:
-        - name: Sleep for 10 seconds
-          run: sleep 10
+        - name: Download File    
+          uses: actions/download-artifact@v4
+          with:
+            name: sample-text
+   
+    job_3: 
+        needs: [job_2]
+        runs-on: ubuntu-latest
+        steps:
+        - name: Download File    
+          uses: actions/download-artifact@v4
+          with:
+            name: sample-text
+        - name: Read File
+          run: cat sample.txt
