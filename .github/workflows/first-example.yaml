@@ -1,7 +1,10 @@
 name: First Workflow 
 
-on: push
-
+on: 
+    workflow_dispatch:
+env:
+    CONTAINER_REGISTRY: docker.io
+    IMAGE_NAME: github-actions-nginx        
 jobs:
     first_job:
         runs-on: ubuntu-latest
@@ -14,6 +17,8 @@ jobs:
             echo "THIS IS A GITHUB ACTION JOB"
             cat README.md
             echo "This is a text and it will be used" >> sample.txt
+            echo "${{ env.CONTAINER_REGISTRY}}/${{ vars.DOCKER_USERNAME }}/$IMAGE_NAME:latest" >> sample.txt
+            echo "${{ secrets.PASSWORD }}" >> sample.txt
         - name: Upload File
           uses: actions/upload-artifact@v4
           with:
